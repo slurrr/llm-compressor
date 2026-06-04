@@ -1,0 +1,34 @@
+# Copy this file per run and fill it before execution.
+run_id: "2026-05-05-<short-name>"
+
+inputs:
+  model_path: "/absolute/path/to/full/weights-or-snapshot"
+  model_slug: null  # null => auto-derived from model path basename
+  calibration_jsonl: null  # null => agent chooses best available source
+
+goals:
+  priority: "quality-first"
+  vram_budget_gb: null
+  must_support_modalities: ["text"]  # e.g. ["text", "vision"]
+  target_runtime:
+    engine: "vllm"
+    openai_compatible: true
+
+constraints:
+  quant_dtype: "fp8"
+  kv_cache_dtype: "fp8_e4m3"
+  max_sequence_length: 2048
+  max_calibration_samples: 256
+
+serving_contract:
+  chat_template_path: null
+  tool_call_parser: null
+  reasoning_parser: null
+  chat_template_content_format: "auto"
+
+outputs:
+  artifact_root: "/home/poop/models/local/quants/llm-compressor-artifacts"
+  run_root: "/home/poop/runs/llm-compressor"
+
+notes:
+  - "Single-input workflow: agent may infer missing values but must record inference in report."
